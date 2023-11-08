@@ -1,15 +1,19 @@
 import 'dart:async';
 
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flutter/material.dart';
 import 'package:santa_game/santa_game.dart';
 
-class Player extends SpriteAnimationComponent with HasGameRef<SantaGame> {
+class Player extends SpriteAnimationComponent
+    with HasGameRef<SantaGame>, CollisionCallbacks {
   Player() : super(size: Vector2.all(200));
 
   @override
   FutureOr<void> onLoad() async {
+    add(RectangleHitbox.relative(Vector2(0.3, 0.8), parentSize: size));
+    //debugMode = true;
     final spritesList = <Sprite>[];
     for (var i = 1; i <= 10; i++) {
       spritesList.add(await Sprite.load('player/r$i.png'));
@@ -35,5 +39,12 @@ class Player extends SpriteAnimationComponent with HasGameRef<SantaGame> {
       },
     );
     add(jumpEffect);
+  }
+
+  @override
+  void onCollisionStart(
+      Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollisionStart(intersectionPoints, other);
+    gameRef.gameOver();
   }
 }

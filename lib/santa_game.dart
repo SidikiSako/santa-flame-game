@@ -7,7 +7,7 @@ import 'package:santa_game/components/background.dart';
 import 'package:santa_game/components/player.dart';
 import 'package:santa_game/components/tree.dart';
 
-class SantaGame extends FlameGame with TapDetector {
+class SantaGame extends FlameGame with TapDetector, HasCollisionDetection {
   late Timer timer;
   late Player player;
 
@@ -36,5 +36,9 @@ class SantaGame extends FlameGame with TapDetector {
   void onTap() {
     super.onTap();
     player.jump();
+  }
+
+  void gameOver() {
+    pauseEngine();
   }
 }
