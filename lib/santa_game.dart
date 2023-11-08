@@ -5,6 +5,7 @@ import 'package:flame/game.dart';
 import 'package:flame/timer.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:santa_game/components/background.dart';
+import 'package:santa_game/components/play.dart';
 import 'package:santa_game/components/player.dart';
 import 'package:santa_game/components/tree.dart';
 
@@ -48,6 +49,16 @@ class SantaGame extends FlameGame with TapDetector, HasCollisionDetection {
 
   void gameOver() {
     audioPlayer.stop();
-    pauseEngine();
+    remove(player);
+    removeWhere((component) => component is TreeComponent);
+    timer.stop();
+    add(Play());
+  }
+
+  void startGame() {
+    audioPlayer.resume();
+    add(player);
+    timer.start();
+    removeWhere((component) => component is Play);
   }
 }
