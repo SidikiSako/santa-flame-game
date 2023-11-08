@@ -13,6 +13,8 @@ class SantaGame extends FlameGame with TapDetector, HasCollisionDetection {
   late Timer timer;
   late Player player;
   late AudioPlayer audioPlayer;
+  bool isPlaying = false;
+  late Play playButton;
 
   @override
   FutureOr<void> onLoad() async {
@@ -22,7 +24,11 @@ class SantaGame extends FlameGame with TapDetector, HasCollisionDetection {
       'collision.mp3',
     ]);
     add(Background());
-    audioPlayer = await FlameAudio.loop('music.mp3', volume: 0.4);
+    playButton = Play();
+    add(playButton);
+    audioPlayer = await FlameAudio.loop('music.mp3', volume: 0.4)
+      ..stop();
+
     timer = Timer(
       1.5,
       repeat: true,
@@ -31,20 +37,23 @@ class SantaGame extends FlameGame with TapDetector, HasCollisionDetection {
       },
     );
     player = Player();
-    add(player);
     return super.onLoad();
   }
 
   @override
   void update(double dt) {
     super.update(dt);
-    timer.update(dt);
+    if (isPlaying) {
+      timer.update(dt);
+    }
   }
 
   @override
   void onTap() {
     super.onTap();
-    player.jump();
+    if (isPlaying) {
+      player.jump();
+    }
   }
 
   void gameOver() {
@@ -52,13 +61,16 @@ class SantaGame extends FlameGame with TapDetector, HasCollisionDetection {
     remove(player);
     removeWhere((component) => component is TreeComponent);
     timer.stop();
-    add(Play());
+    add(playButton);
+    isPlaying = false;
   }
 
   void startGame() {
     audioPlayer.resume();
+
     add(player);
     timer.start();
-    removeWhere((component) => component is Play);
+    remove(playButton);
+    isPlaying = true;
   }
 }
