@@ -11,6 +11,7 @@ import 'package:santa_game/components/tree.dart';
 class SantaGame extends FlameGame with TapDetector, HasCollisionDetection {
   late Timer timer;
   late Player player;
+  late AudioPlayer audioPlayer;
 
   @override
   FutureOr<void> onLoad() async {
@@ -20,7 +21,7 @@ class SantaGame extends FlameGame with TapDetector, HasCollisionDetection {
       'collision.mp3',
     ]);
     add(Background());
-    FlameAudio.loop('music.mp3', volume: 0.4);
+    audioPlayer = await FlameAudio.loop('music.mp3', volume: 0.4);
     timer = Timer(
       1.5,
       repeat: true,
@@ -46,6 +47,7 @@ class SantaGame extends FlameGame with TapDetector, HasCollisionDetection {
   }
 
   void gameOver() {
+    audioPlayer.stop();
     pauseEngine();
   }
 }
