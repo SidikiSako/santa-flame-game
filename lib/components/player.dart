@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
+import 'package:flutter/material.dart';
 import 'package:santa_game/santa_game.dart';
 
 class Player extends SpriteAnimationComponent with HasGameRef<SantaGame> {
@@ -15,5 +17,23 @@ class Player extends SpriteAnimationComponent with HasGameRef<SantaGame> {
     animation = SpriteAnimation.spriteList(spritesList, stepTime: 0.1);
     position = Vector2(50, gameRef.size.y - 250);
     return super.onLoad();
+  }
+
+  void jump() {
+    final jumpEffect = MoveByEffect(
+      Vector2(0, -260),
+      EffectController(duration: 0.7, curve: Curves.decelerate),
+      onComplete: () {
+        final fallEffect = MoveByEffect(
+          Vector2(0, 260),
+          EffectController(
+            duration: 0.7,
+            curve: Curves.fastOutSlowIn,
+          ),
+        );
+        add(fallEffect);
+      },
+    );
+    add(jumpEffect);
   }
 }

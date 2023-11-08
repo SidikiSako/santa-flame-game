@@ -1,13 +1,15 @@
 import 'dart:async';
 
+import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/timer.dart';
 import 'package:santa_game/components/background.dart';
 import 'package:santa_game/components/player.dart';
 import 'package:santa_game/components/tree.dart';
 
-class SantaGame extends FlameGame {
+class SantaGame extends FlameGame with TapDetector {
   late Timer timer;
+  late Player player;
 
   @override
   FutureOr<void> onLoad() async {
@@ -19,7 +21,8 @@ class SantaGame extends FlameGame {
         add(TreeComponent());
       },
     );
-    add(Player());
+    player = Player();
+    add(player);
     return super.onLoad();
   }
 
@@ -27,5 +30,11 @@ class SantaGame extends FlameGame {
   void update(double dt) {
     super.update(dt);
     timer.update(dt);
+  }
+
+  @override
+  void onTap() {
+    super.onTap();
+    player.jump();
   }
 }
