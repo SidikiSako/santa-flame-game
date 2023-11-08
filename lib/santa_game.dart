@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flame/game.dart';
 import 'package:flame/timer.dart';
 import 'package:santa_game/components/background.dart';
+import 'package:santa_game/components/player.dart';
 import 'package:santa_game/components/tree.dart';
 
 class SantaGame extends FlameGame {
@@ -18,6 +19,7 @@ class SantaGame extends FlameGame {
         add(TreeComponent());
       },
     );
+    add(Player());
     return super.onLoad();
   }
 
