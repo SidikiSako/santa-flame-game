@@ -8,7 +8,16 @@ class TreeComponent extends SpriteComponent with HasGameRef<SantaGame> {
   FutureOr<void> onLoad() async {
     sprite = await Sprite.load('obstacle/tree.png');
     size = Vector2(100, 200);
-    position = Vector2(0, gameRef.size.y - 250);
+    position = Vector2(gameRef.size.x, gameRef.size.y - 250);
     return super.onLoad();
+  }
+
+  @override
+  void update(double dt) {
+    x -= dt * 400;
+    if (x < -200) {
+      gameRef.remove(this);
+    }
+    super.update(dt);
   }
 }
