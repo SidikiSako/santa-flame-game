@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:santa_game/santa_game.dart';
 
@@ -39,12 +40,14 @@ class Player extends SpriteAnimationComponent
       },
     );
     add(jumpEffect);
+    FlameAudio.play('jump.mp3', volume: 0.5);
   }
 
   @override
   void onCollisionStart(
       Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
+    FlameAudio.play('collision.mp3', volume: 0.5);
     gameRef.gameOver();
   }
 }
